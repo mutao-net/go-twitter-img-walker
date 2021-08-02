@@ -35,4 +35,4 @@ $ vi target.txt
 ```
 hoge
 huga
-```]
+```
