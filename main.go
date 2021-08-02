@@ -33,8 +33,11 @@ func main()  {
 }
 func checkOptions(args []string) string{
 	if len(args) > 1 {
-		fmt.Println("too many arguments usage: main.go {image download path} default ./")
+		fmt.Println("too many arguments usage: main.go {image download path} default ./img")
 		os.Exit(1)
+	}
+	if len(args) == 0 {
+		return "./img";
 	}
 	return args[0]
 }
@@ -87,7 +90,7 @@ func getTweetImg(screenName string) []string {
 // check if directory exists
 func check_dir (path string, screenName string) {
 	if _, err := os.Stat(path + "/" + screenName); os.IsNotExist(err) {
-		os.Mkdir(path + "/" + screenName, 0755)
+		os.MkdirAll(path + "/" + screenName, 0755)
 	}
 }
 
