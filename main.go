@@ -20,7 +20,10 @@ func main()  {
 	flag.Parse()
 	args := flag.Args()
 	path := checkOptions(args)
-	// fmt.Println(path)
+	run(path)
+}
+
+func run (path string) {
 	users := getTargets()
 	fmt.Println(users)
 	for _, user := range users {
@@ -31,6 +34,7 @@ func main()  {
 		getImg(path, user, mediaList)
 	}
 }
+
 func checkOptions(args []string) string{
 	if len(args) > 1 {
 		fmt.Println("too many arguments usage: main.go {image download path} default ./img")
@@ -38,6 +42,15 @@ func checkOptions(args []string) string{
 	}
 	if len(args) == 0 {
 		return "./img";
+	}
+	if len(args) == 1 {
+		reg := regexp.MustCompile(`([^\.?\/]+.?)\/$`)
+		if (reg.MatchString(args[0])) {
+			return args[0]
+		} else {
+			fmt.Println("specify an absolute path")
+		}
+		os.Exit(1)
 	}
 	return args[0]
 }
@@ -77,11 +90,7 @@ func getTweetImg(screenName string) []string {
 	mediaList := []string{}
 	for _, tweet := range tweets {
 		for _, media := range tweet.Entities.Media {
-			reg := regexp.MustCompile(`([^\/]+?)(\.jpg|\.jpeg|\.gif|\.png)$`)
-			fmt.Println(reg.FindString(media.Media_url_https))
-			// getImg(media.Media_url_https)
 			mediaList = append(mediaList, media.Media_url_https)
-			fmt.Println(mediaList)
 		}
 	}
 	return mediaList
